@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/PROMETEO - Car Controller/Scenes/Mobile Devices Demo.unity
+    guid: 136749ef7a3080548b1664e996c901e6
   m_configObjects: {}
