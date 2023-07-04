@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class CameraFollow : MonoBehaviour {
 
@@ -10,11 +11,11 @@ public class CameraFollow : MonoBehaviour {
 	Vector3 initialCameraPosition;
 	Vector3 initialCarPosition;
 	Vector3 absoluteInitCameraPosition;
-	private const int CAMERA_GAME_FOV = 25;
+	private const float CAMERA_GAME_FOV = 25f;
 
 	private void Awake()
 	{
-		StartGameButtonHandler.OnButtonPressed += () => Camera.main.fieldOfView = CAMERA_GAME_FOV;
+		StartGameButtonHandler.OnButtonPressed += () => StartCoroutine(ChangeFOVValue());
 	}
 
 	void Start(){
@@ -23,7 +24,23 @@ public class CameraFollow : MonoBehaviour {
 		absoluteInitCameraPosition = initialCameraPosition - initialCarPosition;
 	}
 
-	void FixedUpdate()
+
+    public float duration = 2f;
+
+    private IEnumerator ChangeFOVValue()
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float normalizedTime = Mathf.Clamp01(elapsedTime / duration);
+            Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, CAMERA_GAME_FOV, normalizedTime);
+            yield return null;
+        }
+    }
+
+    void FixedUpdate()
 	{
 		//Look at car
 		Vector3 _lookDirection = (new Vector3(carTransform.position.x, carTransform.position.y, carTransform.position.z)) - transform.position;
